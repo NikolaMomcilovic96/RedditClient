@@ -19,7 +19,9 @@ data class RedditNewsDataResponse(
     val title: String,
     val num_comments: Int,
     val created: Long,
-    val thumbnail: String,
+    val selftext: String,
     val url: String,
-    val subreddit: String
+    val subreddit: String,
+    val ups: Int,
+    val is_video: Boolean
 )

@@ -16,6 +16,9 @@
         android:theme="@style/Theme.RedditClient"
         tools:targetApi="n">
         <activity
+            android:name=".ui.PostDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.HomeActivity"
             android:exported="false" />
         <activity

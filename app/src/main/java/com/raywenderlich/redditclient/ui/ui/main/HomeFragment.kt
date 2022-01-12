@@ -1,16 +1,18 @@
 package com.raywenderlich.redditclient.ui.ui.main
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.raywenderlich.redditclient.databinding.MainFragmentBinding
+import com.raywenderlich.redditclient.enum.EnumClass
 import com.raywenderlich.redditclient.repository.PostRepository
 import com.raywenderlich.redditclient.service.RedditChildrenResponse
 import com.raywenderlich.redditclient.service.RedditService
+import com.raywenderlich.redditclient.ui.PostDetailActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -45,8 +47,35 @@ class HomeFragment : Fragment() {
                     result.body()?.data?.children?.forEach {
                         posts.add(it)
                     }
-                    binding.recyclerView.adapter = HomeRecyclerViewAdapter(posts)
                     binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+                    binding.recyclerView.adapter =
+                        HomeRecyclerViewAdapter(posts) { post, clicked ->
+                            when (clicked) {
+                                EnumClass.Card -> startActivity(
+                                    Intent(
+                                        activity,
+                                        PostDetailActivity::class.java
+                                    ).apply {
+                                        putExtra("Title", post.data.title)
+                                        putExtra("Author", post.data.author)
+                                        putExtra("PostImage", post.data.url)
+                                        putExtra("PostText", post.data.selftext)
+                                        putExtra("Subreddit", post.data.subreddit)
+                                        putExtra("Upvotes", post.data.ups)
+                                        putExtra("Comments", post.data.num_comments)
+                                    }
+                                )
+                                EnumClass.Share -> {
+                                    val sendIntent = Intent().apply {
+                                        action = Intent.ACTION_SEND
+                                        putExtra(Intent.EXTRA_TEXT, post.data.url)
+                                        type = "text/plain"
+                                    }
+                                    val shareIntent = Intent.createChooser(sendIntent, null)
+                                    startActivity(shareIntent)
+                                }
+                            }
+                        }
                 }
             }
         }
