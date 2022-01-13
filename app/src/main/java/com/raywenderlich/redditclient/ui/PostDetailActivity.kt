@@ -2,6 +2,7 @@ package com.raywenderlich.redditclient.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.view.WindowCompat
 import com.bumptech.glide.Glide
 import com.raywenderlich.redditclient.Constants
 import com.raywenderlich.redditclient.databinding.ActivityPostDetailBinding
@@ -12,6 +13,8 @@ class PostDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         binding = ActivityPostDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)

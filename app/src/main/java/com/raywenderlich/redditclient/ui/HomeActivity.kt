@@ -105,8 +105,8 @@ class HomeActivity : AppCompatActivity() {
             putExtra(Constants.POST_IMAGE, model.data.url)
             putExtra(Constants.POST_TEXT, model.data.selftext)
             putExtra(Constants.SUBREDDIT, model.data.subreddit)
-            putExtra(Constants.UPVOTES, model.data.ups)
-            putExtra(Constants.COMMENTS, model.data.num_comments)
+            putExtra(Constants.UPVOTES, model.data.ups.toString())
+            putExtra(Constants.COMMENTS, model.data.num_comments.toString())
         })
     }
 

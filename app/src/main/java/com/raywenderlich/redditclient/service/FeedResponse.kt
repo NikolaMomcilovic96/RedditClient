@@ -18,7 +18,6 @@ data class Post(
     val author: String,
     val title: String,
     val num_comments: Int,
-    val created: Long,
     val selftext: String,
     val url: String,
     val subreddit: String,
