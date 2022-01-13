@@ -8,7 +8,10 @@ import retrofit2.http.Path
 
 interface RedditService {
     @GET("r/{subreddit}.json")
-    suspend fun getAllPosts(@Path("subreddit") name: String): Response<RedditNewsResponse>
+    suspend fun getFromSub(@Path("subreddit") name: String): Response<RedditResponse>
+
+    @GET("top.json")
+    suspend fun getTopPosts(): Response<RedditResponse>
 
     companion object {
         val instance: RedditService by lazy {

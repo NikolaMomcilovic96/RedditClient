@@ -1,6 +1,6 @@
 package com.raywenderlich.redditclient.service
 
-data class RedditNewsResponse(
+data class RedditResponse(
     val data: RedditDataResponse
 )
 
@@ -11,10 +11,10 @@ data class RedditDataResponse(
 )
 
 data class RedditChildrenResponse(
-    val data: RedditNewsDataResponse
+    val data: Post
 )
 
-data class RedditNewsDataResponse(
+data class Post(
     val author: String,
     val title: String,
     val num_comments: Int,
