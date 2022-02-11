@@ -7,13 +7,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.WindowCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.raywenderlich.redditclient.Constants
+import com.raywenderlich.redditclient.classes.Constants
 import com.raywenderlich.redditclient.R
 import com.raywenderlich.redditclient.databinding.HomeActivityBinding
-import com.raywenderlich.redditclient.enum.EnumClass
+import com.raywenderlich.redditclient.classes.EnumClass
 import com.raywenderlich.redditclient.repository.PostRepository
 import com.raywenderlich.redditclient.service.RedditChildrenResponse
 import com.raywenderlich.redditclient.service.RedditResponse
@@ -28,6 +31,7 @@ import retrofit2.Response
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: HomeActivityBinding
+    private lateinit var spinner: Spinner
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +41,39 @@ class HomeActivity : AppCompatActivity() {
         binding = HomeActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupRecyclerView("")
+        spinner = binding.sortOptions
+        val options = arrayOf("Top", "Best", "New")
+        spinner.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, options)
+
+        setupRecyclerView("", "Top")
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener,
+            AdapterView.OnItemClickListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                p1: View?,
+                position: Int,
+                p3: Long
+            ) {
+                val term = options[position]
+                if (binding.subredditTextView.text == Constants.HOME_PAGE) {
+                    setupRecyclerView("", term)
+                } else {
+                    setupRecyclerView(binding.subredditTextView.text.toString(), term)
+                }
+
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                TODO("Not yet implemented")
+            }
+
+        }
+
         handleIntent(intent)
     }
 
@@ -51,21 +87,44 @@ class HomeActivity : AppCompatActivity() {
         return true
     }
 
-    private fun setupRecyclerView(term: String) {
+    private fun setupRecyclerView(sub: String, sort: String) {
         showProgressBar()
 
         val service = RedditService.instance
         val repo = PostRepository(service)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         GlobalScope.launch {
-            if (term.isNotEmpty()) {
-                val results = repo.getFromSub(term)
-                displayData(results, term)
+            if (sub.isEmpty()) {
+                when (sort) {
+                    "Top" -> {
+                        val results = repo.getTopPosts()
+                        displayData(results, Constants.HOME_PAGE)
+                    }
+                    "Best" -> {
+                        val results = repo.getBestPosts()
+                        displayData(results, Constants.HOME_PAGE)
+                    }
+                    "New" -> {
+                        val results = repo.getNewPosts()
+                        displayData(results, Constants.HOME_PAGE)
+                    }
+                }
             } else {
-                val results = repo.getTopPosts()
-                displayData(results, Constants.HOME_PAGE)
+                when (sort) {
+                    "Top" -> {
+                        val results = repo.getFromSub(sub)
+                        displayData(results, sub)
+                    }
+                    "Best" -> {
+                        val results = repo.getFromSubBest(sub)
+                        displayData(results, sub)
+                    }
+                    "New" -> {
+                        val results = repo.getFromSubNew(sub)
+                        displayData(results, sub)
+                    }
+                }
             }
-
         }
     }
 
@@ -113,7 +172,7 @@ class HomeActivity : AppCompatActivity() {
     private fun handleIntent(intent: Intent) {
         if (Intent.ACTION_SEARCH == intent.action) {
             val query = intent.getStringExtra(SearchManager.QUERY) ?: return
-            setupRecyclerView(query)
+            setupRecyclerView(query, "Top")
         }
     }
 

@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.view.WindowCompat
 import com.bumptech.glide.Glide
-import com.raywenderlich.redditclient.Constants
+import com.raywenderlich.redditclient.classes.Constants
 import com.raywenderlich.redditclient.databinding.ActivityPostDetailBinding
 
 class PostDetailActivity : AppCompatActivity() {
@@ -22,6 +22,7 @@ class PostDetailActivity : AppCompatActivity() {
         val sub = intent.getStringExtra(Constants.SUBREDDIT)
         val author = intent.getStringExtra(Constants.AUTHOR)
         val image = intent.getStringExtra(Constants.POST_IMAGE)
+        val text = intent.getStringExtra(Constants.POST_TEXT)
         val upvotes = intent.getStringExtra(Constants.UPVOTES)
         val title = intent.getStringExtra(Constants.TITLE)
         val comments = intent.getStringExtra(Constants.COMMENTS)

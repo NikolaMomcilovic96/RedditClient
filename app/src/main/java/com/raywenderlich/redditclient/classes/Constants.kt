@@ -1,4 +1,4 @@
-package com.raywenderlich.redditclient
+package com.raywenderlich.redditclient.classes
 
 class Constants {
     companion object {

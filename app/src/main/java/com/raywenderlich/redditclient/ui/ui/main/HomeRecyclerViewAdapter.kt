@@ -4,9 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.raywenderlich.redditclient.Constants
+import com.raywenderlich.redditclient.classes.Constants
 import com.raywenderlich.redditclient.databinding.PostListItemBinding
-import com.raywenderlich.redditclient.enum.EnumClass
+import com.raywenderlich.redditclient.classes.EnumClass
 import com.raywenderlich.redditclient.service.RedditChildrenResponse
 import kotlinx.android.synthetic.main.post_list_item.view.*
 

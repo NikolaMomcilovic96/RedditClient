@@ -7,11 +7,23 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface RedditService {
-    @GET("r/{subreddit}.json")
+    @GET("r/{subreddit}/top.json")
     suspend fun getFromSub(@Path("subreddit") name: String): Response<RedditResponse>
+
+    @GET("r/{subreddit}/best.json")
+    suspend fun getSubSortedByBest(@Path("subreddit") name: String): Response<RedditResponse>
+
+    @GET("r/{subreddit}/new.json")
+    suspend fun getSubSortedByNew(@Path("subreddit") name: String): Response<RedditResponse>
 
     @GET("top.json")
     suspend fun getTopPosts(): Response<RedditResponse>
+
+    @GET("best.json")
+    suspend fun getBestPosts(): Response<RedditResponse>
+
+    @GET("new.json")
+    suspend fun getNewPosts(): Response<RedditResponse>
 
     companion object {
         val instance: RedditService by lazy {
