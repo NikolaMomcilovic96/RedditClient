@@ -30,8 +30,6 @@ import retrofit2.Response
 
 class HomeActivity : AppCompatActivity() {
 
-    //test
-
     private lateinit var binding: HomeActivityBinding
     private lateinit var spinner: Spinner
 
