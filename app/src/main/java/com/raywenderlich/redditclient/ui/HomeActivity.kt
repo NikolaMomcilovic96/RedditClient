@@ -138,11 +138,18 @@ class HomeActivity : AppCompatActivity() {
                     }
                     binding.recyclerView.adapter = HomeRecyclerViewAdapter(posts) { post, clicked ->
                         when (clicked) {
-                            EnumClass.Card -> openPostActivity(post)
+                            EnumClass.Card -> {
+                                if (post.data.selftext == "") {
+                                    openPostDetailActivity(post)
+                                } else {
+                                    openPostTextActivity(post)
+                                }
+                            }
                             EnumClass.Share -> {
+                                val link = "https://reddit.com${post.data.permalink}"
                                 val sendIntent = Intent().apply {
                                     action = Intent.ACTION_SEND
-                                    putExtra(Intent.EXTRA_TEXT, post.data.url)
+                                    putExtra(Intent.EXTRA_TEXT, link)
                                     type = Constants.PLAIN_TEXT
                                 }
                                 val shareIntent = Intent.createChooser(sendIntent, null)
@@ -155,11 +162,23 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun openPostActivity(model: RedditChildrenResponse) {
+    private fun openPostDetailActivity(model: RedditChildrenResponse) {
         startActivity(Intent(this, PostDetailActivity::class.java).apply {
             putExtra(Constants.TITLE, model.data.title)
             putExtra(Constants.AUTHOR, model.data.author)
             putExtra(Constants.POST_IMAGE, model.data.url)
+            putExtra(Constants.LINK, model.data.permalink)
+            putExtra(Constants.SUBREDDIT, model.data.subreddit)
+            putExtra(Constants.UPVOTES, model.data.ups.toString())
+            putExtra(Constants.COMMENTS, model.data.num_comments.toString())
+        })
+    }
+
+    private fun openPostTextActivity(model: RedditChildrenResponse) {
+        startActivity(Intent(this, PostTextActivity::class.java).apply {
+            putExtra(Constants.TITLE, model.data.title)
+            putExtra(Constants.AUTHOR, model.data.author)
+            putExtra(Constants.LINK, model.data.permalink)
             putExtra(Constants.POST_TEXT, model.data.selftext)
             putExtra(Constants.SUBREDDIT, model.data.subreddit)
             putExtra(Constants.UPVOTES, model.data.ups.toString())

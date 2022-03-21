@@ -12,5 +12,6 @@ class Constants {
         const val COMMENTS = "Comments"
         const val PLAIN_TEXT = "text/plain"
         const val VIDEO = "Video"
+        const val LINK = "Link"
     }
 }

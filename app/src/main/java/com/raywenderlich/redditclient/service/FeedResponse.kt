@@ -22,5 +22,6 @@ data class Post(
     val url: String,
     val subreddit: String,
     val ups: Int,
-    val is_video: Boolean
+    val is_video: Boolean,
+    val permalink: String
 )
