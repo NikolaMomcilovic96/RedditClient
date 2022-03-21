@@ -61,7 +61,6 @@ class HomeActivity : AppCompatActivity() {
                 } else {
                     setupRecyclerView(binding.subredditTextView.text.toString(), term)
                 }
-
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -71,7 +70,6 @@ class HomeActivity : AppCompatActivity() {
             override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 TODO("Not yet implemented")
             }
-
         }
 
         handleIntent(intent)
