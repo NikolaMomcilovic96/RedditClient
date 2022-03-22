@@ -1,5 +1,6 @@
 package com.raywenderlich.redditclient.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.view.WindowCompat
@@ -25,6 +26,7 @@ class PostDetailActivity : AppCompatActivity() {
         val upvotes = intent.getStringExtra(Constants.UPVOTES)
         val title = intent.getStringExtra(Constants.TITLE)
         val comments = intent.getStringExtra(Constants.COMMENTS)
+        val permalink = intent.getStringExtra(Constants.LINK)
 
         val upvotesNumber = "$upvotes ${Constants.UPVOTES}"
         val commentsNumber = "$comments ${Constants.COMMENTS}"
@@ -34,5 +36,15 @@ class PostDetailActivity : AppCompatActivity() {
         binding.upvotesTextView.text = upvotesNumber
         binding.numComTextView.text = commentsNumber
         Glide.with(binding.imageView).load(image).into(binding.imageView)
+
+        binding.shareButtonTextView.setOnClickListener {
+            val sendIntent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, permalink)
+                type = Constants.PLAIN_TEXT
+            }
+            val shareIntent = Intent.createChooser(sendIntent, null)
+            startActivity(shareIntent)
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.raywenderlich.redditclient.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.view.WindowCompat
@@ -21,6 +22,7 @@ class PostTextActivity : AppCompatActivity() {
         val upvotes = intent.getStringExtra(Constants.UPVOTES)
         val title = intent.getStringExtra(Constants.TITLE)
         val comments = intent.getStringExtra(Constants.COMMENTS)
+        val permalink = intent.getStringExtra(Constants.LINK)
 
         val subText = "/r/$sub"
         val user = "/u/$author"
@@ -32,5 +34,15 @@ class PostTextActivity : AppCompatActivity() {
         binding.postTitleTextView.text = title
         binding.upvotesTextView.text = upvotesNumber
         binding.numComTextView.text = commentsNumber
+
+        binding.shareButtonTextView.setOnClickListener {
+            val sendIntent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, permalink)
+                type = Constants.PLAIN_TEXT
+            }
+            val shareIntent = Intent.createChooser(sendIntent, null)
+            startActivity(shareIntent)
+        }
     }
 }
